@@ -5,6 +5,7 @@ html, body, #root, .container {
 .container {
   display: flex;
   flex-direction: column;
+  text-align: center;
 }
 
 .container #root {
@@ -14,12 +15,47 @@ html, body, #root, .container {
 .container #menu {
   margin-bottom: 0;
   margin-top: auto;
+  padding-left: 10px;
+  padding-right: 10px;
   height: 0;
   background-color: white;
   transition: height 1s;
   z-index: 1000;
 }
 
-.container .action {
+.exit {
+  margin: 5px;
+  text-align: end;
+  position: relative;
+}
 
+.exit .button {
+  background-color: white;
+  margin: 5px;
+}
+
+.action-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+a {
+  border: 1px solid #030303;
+  border-radius: 5px;
+  padding: 5px;
+  text-decoration: none;
+  color: #030303;
+  font-weight: bold;
+  text-align: center;
+}
+i {
+  margin-bottom: 5px;
+}
+.action {
+  height: 150px;
+  min-width: 150px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

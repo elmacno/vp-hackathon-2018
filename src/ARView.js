@@ -68,8 +68,8 @@ class Marker {
 
 class Sketch extends Component {
   state = {
-    displayMenu: false,
-    markerName: ''
+    displayMenu: true,
+    markerName: 'rcp'
   }
 
   names = {
@@ -80,36 +80,36 @@ class Sketch extends Component {
   actions = {
     rcp: [{
       link: 'mailto:macarena.ordiz@endava.com?subject=Reservar%20cochera',
-      image: '',
+      image: 'fa fa-car',
       title: 'Reservar una cochera'
     },
     {
       link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
-      image: '',
+      image: 'fas fa-utensils',
       title: 'Pedir empanadas'
     },
     {
       link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
-      image: '',
+      image: 'fas fa-plane-departure',
       title: 'Travel Policy'
     },
     {
       link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
-      image: '',
+      image: 'fas fa-globe-americas',
       title: 'Visa'
     }],
     hr: [{
       link: 'mailto:daniela.martin@endava.com?subject=Recibos%20de%20sueldo',
-      image: '',
+      image: 'fas fa-dollar-sign',
       title: 'Recibos de sueldo'
     },
     {
       link: 'mailto:daniela.martin@endava.com?subject=Agregar%20familiar%20OSDE',
-      image: '',
+      image: 'fas fa-notes-medical',
       title: 'Agregar Familiar OSDE'
     },{
       link: 'mailto:daniela.martin@endava.com?subject=Licencia',
-      image: '',
+      image: 'fas fa-bed',
       title: 'Licencias'
     }]
   }
@@ -188,17 +188,23 @@ class Sketch extends Component {
       <div className="container">
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
         <div id="menu" style={{height: displayMenu ? '30%': 0}}>
-        <h3>Hola!! soy {name} en que te puedo ayudar?</h3>
-        <ul>
-          {
-            actions.map((action) => {
-              return (
-                <li className="action">
-                  <a href={action.link}>{action.title}</a>
-                </li>
-            )})
-          }
-        </ul>
+          <div className="exit">
+            <span className="button">
+              <i onClick={() => this.setState({displayMenu: false})} className="fa fa-times" />
+            </span>
+          </div>
+          <h3>Hola!! Soy {name}, en que te puedo ayudar?</h3>
+          <div className="action-container">
+            {
+              actions.map((action) => {
+                return (
+                  <a className="action" href={action.link}>
+                    <i className={ 'fa-3x ' + action.image}></i>
+                    <span >{action.title}</span>
+                  </a>
+              )})
+            }
+          </div>
         </div>
       </div>
     );
