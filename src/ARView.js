@@ -10,8 +10,9 @@ import './ARView.css';
 const { Camera, PerspectiveCamera, DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, Scene, Texture, AmbientLight } = THREE;
 
 class Marker {
-  constructor(scene, arToolkitContext, pattern, modelName, callback) {
+  constructor(scene, arToolkitContext, legend, pattern, modelName, callback) {
     this.scene = scene;
+    this.legend = legend;
     this.pattern = pattern;
     this.modelName = modelName;
     this.markerCallback = callback;
@@ -27,9 +28,37 @@ class Marker {
     this.model = await loadModel(this.modelName);
     this.markerRoot.add(this.model);
     this.model.rotation.y = Math.PI; // -90°
-    this.model.scale.x = 2; // -90°
-    this.model.scale.y = 2; // -90°
-    this.model.scale.z = 2; // -90°
+    this.model.scale.x = 2;
+    this.model.scale.y = 2;
+    this.model.scale.z = 2;
+
+
+    this.textMeshes = [];
+    let loader = new THREE.FontLoader();
+    loader.load('https://threejs.org/examples/fonts/droid/droid_sans_regular.typeface.json', (font) => {
+      let geometry = new THREE.TextGeometry(this.legend, {
+        font: font
+      });
+      let material = new THREE.MeshPhongMaterial( 
+        { color: 0x030303, specular: 0xffffff }
+      );
+
+      geometry.computeBoundingBox();
+      let halfWidth = (geometry.boundingBox.max.x - geometry.boundingBox.min.x) / 2;
+      let mesh = new THREE.Mesh(geometry, material);
+      
+      mesh.rotation.x = - Math.PI / 4;
+      mesh.rotation.z = 0;
+      mesh.scale.x = mesh.scale.y = mesh.scale.z = 0.0015;
+      mesh.position.x = - halfWidth * 0.0015;
+      mesh.position.y = -0.5;
+      mesh.position.z = 0;
+      this.textMeshes.push(mesh);
+      this.markerRoot.add(mesh);
+    });
+  }
+
+  update = (delta) => {
   }
 
   handleMarkerFound = () => {
@@ -103,13 +132,15 @@ class Sketch extends Component {
 
     const onRenderFcts = [];
     const arToolkitContext = initializeArToolkit(renderer, camera, onRenderFcts);
-    this.duck = new Marker(scene, arToolkitContext, 'rcp', 'duck', this.handleMarkerFound);
-    this.computer = new Marker(scene, arToolkitContext, 'hr', 'computer', this.handleMarkerFound);
+    this.duck = new Marker(scene, arToolkitContext, 'Recepción', 'rcp', 'duck', this.handleMarkerFound);
+    this.computer = new Marker(scene, arToolkitContext, 'Recursos Humanos', 'hr', 'computer', this.handleMarkerFound);
     await this.duck.setupModel();
     await this.computer.setupModel();
 
     // render the scene
-    onRenderFcts.push(function(){
+    onRenderFcts.push((delta) => {
+        this.duck.update(delta);
+        this.computer.update(delta);
         camera.lookAt( scene.position );
         renderer.render(scene, camera);
     });
