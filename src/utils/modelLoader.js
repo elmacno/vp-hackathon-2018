@@ -1,10 +1,11 @@
 /* globals THREE, requestAnimationFrame */
 import '../utils/models/MTLLoader';
 import '../utils/models/OBJLoader';
-import obj from '../assets/clippy/model.obj';
-import material from '../assets/clippy/materials.mtl';
 
-let loadModel = () => {
+let loadModel = (model) => {
+  let obj = require(`../assets/${model}/model.obj`);
+  let material = require(`../assets/${model}/materials.mtl`);
+
   return new Promise((resolve, reject) => {
     var loader = new THREE.MTLLoader();
     loader.setCrossOrigin(true);

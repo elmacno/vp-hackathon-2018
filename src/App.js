@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Sketch from './Sketch';
+import ARView from './ARView';
 
 class App extends Component {
   render() {
     return (
-      <Sketch />
+      <ARView />
     );
   }
 }
