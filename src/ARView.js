@@ -13,7 +13,7 @@ class Marker {
     this.scene = scene;
     this.pattern = pattern;
     this.modelName = modelName;
-    
+
     this.markerRoot = new Group();
     this.scene.add(this.markerRoot);
     this.marker = getMarker(arToolkitContext, this.markerRoot, this.pattern);
@@ -24,8 +24,6 @@ class Marker {
   setupModel = async () => {
     this.model = await loadModel(this.modelName);
     this.markerRoot.add(this.model);
-    this.model.rotation.x = - Math.PI / 2; // -90°
-    this.model.rotation.y = - Math.PI / 2; // -90°
   }
 
   handleMarkerFound = () => {
@@ -56,7 +54,7 @@ class Sketch extends Component {
 
     const renderer = this.renderer = initializeRenderer(this.canvas);
 
-    
+
     const scene = new Scene();
     const camera = new PerspectiveCamera( 70, this.canvas.clientWidth / this.canvas.clientHeight, 1, 10000 );
     scene.add(camera);
@@ -64,8 +62,10 @@ class Sketch extends Component {
     const onRenderFcts = [];
     const arToolkitContext = initializeArToolkit(renderer, camera, onRenderFcts);
     this.clippy = new Marker(scene, arToolkitContext, 'rcp', 'clippy');
+    this.computer = new Marker(scene, arToolkitContext, 'hr', 'computer');
     await this.clippy.setupModel();
-    
+    await this.computer.setupModel();
+
     // render the scene
     onRenderFcts.push(function(){
         camera.lookAt( scene.position );
