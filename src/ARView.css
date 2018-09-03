@@ -17,4 +17,9 @@ html, body, #root, .container {
   height: 0;
   background-color: white;
   transition: height 1s;
+  z-index: 1000;
+}
+
+.container .action {
+
 }
