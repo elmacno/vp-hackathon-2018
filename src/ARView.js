@@ -16,7 +16,7 @@ class Marker {
     this.pattern = pattern;
     this.modelName = modelName;
     this.markerCallback = callback;
-    
+
     this.markerRoot = new Group();
     this.scene.add(this.markerRoot);
     this.marker = getMarker(arToolkitContext, this.markerRoot, this.pattern);
@@ -27,8 +27,6 @@ class Marker {
   setupModel = async () => {
     this.model = await loadModel(this.modelName);
     this.markerRoot.add(this.model);
-    //this.model.rotation.x = Math.PI / 2; // -90°
-    this.model.rotation.x = - Math.PI / 4; // -90°
     this.model.rotation.y = Math.PI; // -90°
     this.model.scale.x = 2;
     this.model.scale.y = 2;
@@ -70,40 +68,47 @@ class Marker {
 
 class Sketch extends Component {
   state = {
-    displayMenu: false
+    displayMenu: false,
+    markerName: ''
+  }
+
+  names = {
+    rcp: "Macarena",
+    hr: "Daniela"
   }
 
   actions = {
     rcp: [{
-      link: 'mailto:macarena.ordiz@endava.com&subject=Reservar%20cochera',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Reservar%20cochera',
       image: '',
       title: 'Reservar una cochera'
     },
     {
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Pedir empanadas'
     },
     {
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Travel Policy'
     },
     {
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Visa'
     }],
     hr: [{
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Pedir empanadas'
     }]
   }
 
-  handleMarkerFound = () => {
+  handleMarkerFound = (name) => {
     this.setState({
-      displayMenu: true
+      displayMenu: true,
+      markerName: name
     })
   }
 
@@ -169,19 +174,23 @@ class Sketch extends Component {
   render() {
     const { displayMenu, markerName } = this.state;
     const actions = this.actions[markerName] || [];
+    const name = this.names[markerName] || "";
     return (
       <div className="container">
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
         <div id="menu" style={{height: displayMenu ? '25%': 0}}>
+        <h3>Hola!! soy {name} en que te puedo ayudar?</h3>
+        <ul>
           {
-            actions.forEach((action) => {
+            actions.map((action) => {
               return (
-                <span className="action">
-                  <a href={action.link}><img src={require(`${action.image}`)} />{action.title}</a>
-                </span>
-            )}) 
+                <li className="action">
+                  <a href={action.link}>{action.title}</a>
+                </li>
+            )})
           }
-        </div>        
+        </ul>
+        </div>
       </div>
     );
   }
