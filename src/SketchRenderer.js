@@ -5,6 +5,33 @@ import { initializeArToolkit, getMarker } from './utils/arToolkit';
 import detectEdge from './utils/detectEdge';
 import loadModel from './utils/modelLoader';
 
+const { Group, AmbientLight } = THREE;
+
+class Marker {
+  constructor(scene, arToolkitContext, pattern, modelName) {
+    this.scene = scene;
+    this.pattern = pattern;
+    this.modelName = modelName;
+    
+    this.markerRoot = new Group();
+    this.scene.add(this.markerRoot);
+    this.marker = getMarker(arToolkitContext, this.markerRoot, this.pattern);
+    this.marker.addEventListener('markerFound', this.handleMarkerFound);
+    this.markerRoot.add(new AmbientLight(0xaaaaaa))
+  }
+
+  setupModel = async () => {
+    this.model = await loadModel(this.modelName);
+    this.markerRoot.add(this.model);
+    this.model.rotation.x = - Math.PI / 2; // -90°
+    this.model.rotation.y = - Math.PI / 2; // -90°
+  }
+
+  handleMarkerFound = () => {
+
+  }
+}
+
 export const sketchRendererFactory = ({ THREE, initializeArToolkit, initializeRenderer, getMarker, requestAnimationFrame, detectEdge }) => {
     const { Camera, DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, Scene, Texture, AmbientLight } = THREE;
 
@@ -26,27 +53,11 @@ export const sketchRendererFactory = ({ THREE, initializeArToolkit, initializeRe
             const camera = new Camera();
             scene.add(camera);
 
-            const markerRoot = new Group();
-            scene.add(markerRoot);
             const onRenderFcts = [];
             const arToolkitContext = initializeArToolkit(renderer, camera, onRenderFcts);
-            const marker = getMarker(arToolkitContext, markerRoot);
-
-            marker.addEventListener('markerFound', onMarkerFound);
-
-            this.clippy = await loadModel();
-            markerRoot.add(this.clippy);
-
-            this.clippy.rotation.x = - Math.PI / 2; // -90°
-            this.clippy.rotation.y = - Math.PI / 2; // -90°
-            this.clippy.rotation.z = rotation;
-            this.clippy.scale.x = scaleX;
-            this.clippy.scale.y = scaleY;
-
-            // Initialize lighting...
-            var ambientLight = new AmbientLight(0xaaaaaa);
-            markerRoot.add(ambientLight);
-
+            this.clippy = new Marker(scene, arToolkitContext, 'hiro', 'clippy');
+            await this.clippy.setupModel();
+            
             // render the scene
             onRenderFcts.push(function(){
                 renderer.render(scene, camera);
@@ -76,14 +87,6 @@ export const sketchRendererFactory = ({ THREE, initializeArToolkit, initializeRe
 
         storeRef = node => {
             this.canvas = node;
-        }
-
-        componentDidUpdate() {
-            const { coordX, coordZ, scaleX, scaleY, rotation } = this.props;
-            this.clippy.scale.x = scaleX;
-            this.clippy.scale.y = scaleY;
-            this.clippy.rotation.z = rotation;
-            this.clippy.needsUpdate = true;         
         }
 
         render() {

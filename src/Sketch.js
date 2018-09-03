@@ -26,8 +26,8 @@ class Sketch extends Component {
         },
         rotation: 0,
         scale: {
-            x: 2,
-            y: 2,
+            x: 1,
+            y: 1,
         }
     };
 
