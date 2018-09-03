@@ -43,29 +43,34 @@ class Sketch extends Component {
     markerName: ''
   }
 
+  names = {
+    rcp: "Macarena",
+    hr: "Daniela"
+  }
+
   actions = {
     rcp: [{
-      link: 'mailto:macarena.ordiz@endava.com&subject=Reservar%20cochera',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Reservar%20cochera',
       image: '',
       title: 'Reservar una cochera'
     },
     {
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Pedir empanadas'
     },
     {
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Travel Policy'
     },
     {
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Travel%20Policy',
       image: '',
       title: 'Visa'
     }],
     hr: [{
-      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Pedir empanadas'
     }]
@@ -138,16 +143,18 @@ class Sketch extends Component {
   render() {
     const { displayMenu, markerName } = this.state;
     const actions = this.actions[markerName] || [];
+    const name = this.names[markerName] || "";
     return (
       <div className="container">
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
-        <div id="menu" style={{height: displayMenu ? '25%': 0}}>
+        <div id="menu" style={{height: displayMenu ? '40%': 0}}>
+        <div>Hola!! soy {name} en que te puedo ayudar?</div>
           {
             actions.map((action) => {
               return (
-                <span className="action">
-                  <a href={action.link}><h2>{action.title}</h2></a>
-                </span>
+                <div className="action">
+                  <a href={action.link}>{action.title}</a>
+                </div>
             )})
           }
         </div>
