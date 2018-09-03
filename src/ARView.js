@@ -65,7 +65,7 @@ class Sketch extends Component {
       title: 'Travel Policy'
     },
     {
-      link: 'mailto:macarena.ordiz@endava.com?subject=Travel%20Policy',
+      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: '',
       title: 'Visa'
     }],
@@ -147,16 +147,18 @@ class Sketch extends Component {
     return (
       <div className="container">
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
-        <div id="menu" style={{height: displayMenu ? '40%': 0}}>
-        <div>Hola!! soy {name} en que te puedo ayudar?</div>
+        <div id="menu" style={{height: displayMenu ? '25%': 0}}>
+        <h3>Hola!! soy {name} en que te puedo ayudar?</h3>
+        <ul>
           {
             actions.map((action) => {
               return (
-                <div className="action">
+                <li className="action">
                   <a href={action.link}>{action.title}</a>
-                </div>
+                </li>
             )})
           }
+        </ul>
         </div>
       </div>
     );
