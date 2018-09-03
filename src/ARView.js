@@ -99,9 +99,18 @@ class Sketch extends Component {
       title: 'Visa'
     }],
     hr: [{
-      link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
+      link: 'mailto:daniela.martin@endava.com?subject=Recibos%20de%20sueldo',
       image: '',
-      title: 'Pedir empanadas'
+      title: 'Recibos de sueldo'
+    },
+    {
+      link: 'mailto:daniela.martin@endava.com?subject=Agregar%20familiar%20OSDE',
+      image: '',
+      title: 'Agregar Familiar OSDE'
+    },{
+      link: 'mailto:daniela.martin@endava.com?subject=Licencia',
+      image: '',
+      title: 'Licencias'
     }]
   }
 
