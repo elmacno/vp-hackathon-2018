@@ -15,7 +15,7 @@ class Marker {
     this.pattern = pattern;
     this.modelName = modelName;
     this.markerCallback = callback;
-    
+
     this.markerRoot = new Group();
     this.scene.add(this.markerRoot);
     this.marker = getMarker(arToolkitContext, this.markerRoot, this.pattern);
@@ -26,8 +26,6 @@ class Marker {
   setupModel = async () => {
     this.model = await loadModel(this.modelName);
     this.markerRoot.add(this.model);
-    //this.model.rotation.x = Math.PI / 2; // -90°
-    this.model.rotation.x = - Math.PI / 4; // -90°
     this.model.rotation.y = Math.PI; // -90°
     this.model.scale.x = 2; // -90°
     this.model.scale.y = 2; // -90°
@@ -41,7 +39,8 @@ class Marker {
 
 class Sketch extends Component {
   state = {
-    displayMenu: false
+    displayMenu: false,
+    markerName: ''
   }
 
   actions = {
@@ -72,9 +71,10 @@ class Sketch extends Component {
     }]
   }
 
-  handleMarkerFound = () => {
+  handleMarkerFound = (name) => {
     this.setState({
-      displayMenu: true
+      displayMenu: true,
+      markerName: name
     })
   }
 
@@ -93,7 +93,7 @@ class Sketch extends Component {
 
 
     const scene = new Scene();
-    const camera = new Camera();
+    const camera = new PerspectiveCamera( 70, this.canvas.clientWidth / this.canvas.clientHeight, 1, 10000 );
     scene.add(camera);
 
     const onRenderFcts = [];
@@ -143,14 +143,14 @@ class Sketch extends Component {
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
         <div id="menu" style={{height: displayMenu ? '25%': 0}}>
           {
-            actions.forEach((action) => {
+            actions.map((action) => {
               return (
                 <span className="action">
-                  <a href={action.link}><img src={require(`${action.image}`)} />{action.title}</a>
+                  <a href={action.link}><h2>{action.title}</h2></a>
                 </span>
-            )}) 
+            )})
           }
-        </div>        
+        </div>
       </div>
     );
   }
