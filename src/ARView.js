@@ -6,7 +6,7 @@ import { initializeArToolkit, getMarker } from './utils/arToolkit';
 import loadModel from './utils/modelLoader';
 
 //import SketchRenderer from './SketchRenderer';
-const { Camera, DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, Scene, Texture, AmbientLight } = THREE;
+const { Camera, PerspectiveCamera, DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, Scene, Texture, AmbientLight } = THREE;
 
 class Marker {
   constructor(scene, arToolkitContext, pattern, modelName) {
@@ -56,17 +56,19 @@ class Sketch extends Component {
 
     const renderer = this.renderer = initializeRenderer(this.canvas);
 
+    
     const scene = new Scene();
-    const camera = new Camera();
+    const camera = new PerspectiveCamera( 70, this.canvas.clientWidth / this.canvas.clientHeight, 1, 10000 );
     scene.add(camera);
 
     const onRenderFcts = [];
     const arToolkitContext = initializeArToolkit(renderer, camera, onRenderFcts);
-    this.clippy = new Marker(scene, arToolkitContext, 'hiro', 'clippy');
+    this.clippy = new Marker(scene, arToolkitContext, 'rcp', 'clippy');
     await this.clippy.setupModel();
     
     // render the scene
     onRenderFcts.push(function(){
+        camera.lookAt( scene.position );
         renderer.render(scene, camera);
     });
 
