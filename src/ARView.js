@@ -4,16 +4,18 @@ import React, { Component } from 'react';
 import initializeRenderer from './utils/initializeRenderer';
 import { initializeArToolkit, getMarker } from './utils/arToolkit';
 import loadModel from './utils/modelLoader';
+import './ARView.css';
 
 //import SketchRenderer from './SketchRenderer';
 const { Camera, PerspectiveCamera, DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, Scene, Texture, AmbientLight } = THREE;
 
 class Marker {
-  constructor(scene, arToolkitContext, pattern, modelName) {
+  constructor(scene, arToolkitContext, pattern, modelName, callback) {
     this.scene = scene;
     this.pattern = pattern;
     this.modelName = modelName;
-
+    this.markerCallback = callback;
+    
     this.markerRoot = new Group();
     this.scene.add(this.markerRoot);
     this.marker = getMarker(arToolkitContext, this.markerRoot, this.pattern);
@@ -33,19 +35,49 @@ class Marker {
   }
 
   handleMarkerFound = () => {
-
+    this.markerCallback(this.pattern);
   }
 }
 
-const styles = {
-  backButton: {
-    zIndex: 1000,
-    position: 'absolute',
-    right: '1rem',
-    top: '1rem',
-  }
-}
 class Sketch extends Component {
+  state = {
+    markerFound: false
+  }
+
+  actions = {
+    rcp: [{
+      link: 'mailto:macarena.ordiz@endava.com&subject=Reservar%20cochera',
+      image: '',
+      title: 'Reservar una cochera'
+    },
+    {
+      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      image: '',
+      title: 'Pedir empanadas'
+    },
+    {
+      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      image: '',
+      title: 'Travel Policy'
+    },
+    {
+      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      image: '',
+      title: 'Visa'
+    }],
+    hr: [{
+      link: 'mailto:macarena.ordiz@endava.com&subject=Empanadas%20por%20favor!',
+      image: '',
+      title: 'Pedir empanadas'
+    }]
+  }
+
+  handleMarkerFound = () => {
+    this.setState({
+      markerFound: true
+    })
+  }
+
   async componentDidMount() {
     const {
       opacity,
@@ -104,8 +136,22 @@ class Sketch extends Component {
   }
 
   render() {
+    const { displayMenu, markerName } = this.state;
+    const actions = this.actions[markerName] || [];
     return (
-      <canvas id="root" ref={this.storeRef} />
+      <div className="container">
+        <canvas style={{flex:1}} id="root" ref={this.storeRef} />
+        <div id="menu" style={{height: this.state.displayMenu ? '25%': 0}}>
+          {
+            actions.forEach((action) => {
+              return (
+                <span className="action">
+                  <a href={action.link}><img src={require(`${action.image}`)} />{action.title}</a>
+                </span>
+            )}) 
+          }
+        </div>        
+      </div>
     );
   }
 }

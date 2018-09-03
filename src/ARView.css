@@ -1,0 +1,20 @@
+html, body, #root, .container {
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container #root {
+  flex: 1;
+}
+
+.container #menu {
+  margin-bottom: 0;
+  margin-top: auto;
+  height: 0;
+  background-color: white;
+  transition: height 1s;
+}
