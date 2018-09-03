@@ -41,7 +41,7 @@ class Marker {
 
 class Sketch extends Component {
   state = {
-    markerFound: false
+    displayMenu: false
   }
 
   actions = {
@@ -74,7 +74,7 @@ class Sketch extends Component {
 
   handleMarkerFound = () => {
     this.setState({
-      markerFound: true
+      displayMenu: true
     })
   }
 
@@ -98,8 +98,8 @@ class Sketch extends Component {
 
     const onRenderFcts = [];
     const arToolkitContext = initializeArToolkit(renderer, camera, onRenderFcts);
-    this.duck = new Marker(scene, arToolkitContext, 'rcp', 'duck');
-    this.computer = new Marker(scene, arToolkitContext, 'hr', 'computer');
+    this.duck = new Marker(scene, arToolkitContext, 'rcp', 'duck', this.handleMarkerFound);
+    this.computer = new Marker(scene, arToolkitContext, 'hr', 'computer', this.handleMarkerFound);
     await this.duck.setupModel();
     await this.computer.setupModel();
 
@@ -141,7 +141,7 @@ class Sketch extends Component {
     return (
       <div className="container">
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
-        <div id="menu" style={{height: this.state.displayMenu ? '25%': 0}}>
+        <div id="menu" style={{height: displayMenu ? '25%': 0}}>
           {
             actions.forEach((action) => {
               return (
