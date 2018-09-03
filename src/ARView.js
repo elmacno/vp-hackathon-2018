@@ -147,7 +147,7 @@ class Sketch extends Component {
     return (
       <div className="container">
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
-        <div id="menu" style={{height: displayMenu ? '25%': 0}}>
+        <div id="menu" style={{height: displayMenu ? '40%': 0}}>
         <h3>Hola!! soy {name} en que te puedo ayudar?</h3>
         <ul>
           {
