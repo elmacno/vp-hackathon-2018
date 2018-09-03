@@ -2,7 +2,7 @@
 import '../utils/models/MTLLoader';
 import '../utils/models/OBJLoader';
 import obj from '../assets/clippy/model.obj';
-import material from '../assets/clippy/material.mtl';
+import material from '../assets/clippy/materials.mtl';
 
 let loadModel = () => {
   return new Promise((resolve, reject) => {

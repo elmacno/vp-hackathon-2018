@@ -6,7 +6,7 @@ import detectEdge from './utils/detectEdge';
 import loadModel from './utils/modelLoader';
 
 export const sketchRendererFactory = ({ THREE, initializeArToolkit, initializeRenderer, getMarker, requestAnimationFrame, detectEdge }) => {
-    const { Camera, DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, Scene, Texture } = THREE;
+    const { Camera, DoubleSide, Group, Mesh, MeshBasicMaterial, PlaneGeometry, Scene, Texture, AmbientLight } = THREE;
 
     return class SketchRenderer extends Component {
         async componentDidMount() {
@@ -35,32 +35,17 @@ export const sketchRendererFactory = ({ THREE, initializeArToolkit, initializeRe
             marker.addEventListener('markerFound', onMarkerFound);
 
             this.clippy = await loadModel();
-            //THREE.utils.scaleLongestSideToSize(object, 0.75);
             markerRoot.add(this.clippy);
-            // const geometry = new PlaneGeometry(1, 1, 1);
 
-            // this.image = this.props.image;
-            // this.blackImage = this.props.blackImage;
+            this.clippy.rotation.x = - Math.PI / 2; // -90°
+            this.clippy.rotation.y = - Math.PI / 2; // -90°
+            this.clippy.rotation.z = rotation;
+            this.clippy.scale.x = scaleX;
+            this.clippy.scale.y = scaleY;
 
-            // const texture = new Texture(this.image);
-            // texture.needsUpdate = true;
-
-            // this.material = new MeshBasicMaterial({
-            //     map: texture,
-            //     opacity,
-            //     side: DoubleSide,
-            //     transparent: true,
-            // });
-
-            // this.mesh = new Mesh(geometry, this.material);
-            // this.mesh.rotation.x = - Math.PI / 2; // -90°
-            // this.mesh.rotation.z = rotation;
-            // this.mesh.position.x = coordX;
-            // this.mesh.position.z = coordZ;
-            // this.mesh.scale.x = scaleX;
-            // this.mesh.scale.y = scaleY;
-
-            // markerRoot.add(this.mesh);
+            // Initialize lighting...
+            var ambientLight = new AmbientLight(0xaaaaaa);
+            markerRoot.add(ambientLight);
 
             // render the scene
             onRenderFcts.push(function(){
@@ -95,31 +80,10 @@ export const sketchRendererFactory = ({ THREE, initializeArToolkit, initializeRe
 
         componentDidUpdate() {
             const { coordX, coordZ, scaleX, scaleY, rotation } = this.props;
-            this.mesh.position.x = coordX;
-            this.mesh.position.z = coordZ;
-            this.mesh.scale.x = scaleX;
-            this.mesh.scale.y = scaleY;
-            this.mesh.rotation.z = rotation;
-            this.mesh.needsUpdate = true;
-
-            const { blackImage, image } = this.props;
-            const { opacity, isDetectingEdge, blur, lowTreshold, highTreshold } = this.props;
-            if (isDetectingEdge) {
-                this.material.opacity = 1;
-                const alphaImage = detectEdge(image, { blur, lowTreshold, highTreshold });
-                const alphaTexture = new Texture(alphaImage);
-                alphaTexture.needsUpdate = true;
-                this.material.alphaMap = alphaTexture;
-                this.material.map.image = blackImage;
-                this.material.map.needsUpdate = true;
-            } else {
-                this.material.opacity = opacity;
-                this.material.alphaMap = null;
-                const texture = new Texture(image);
-                texture.needsUpdate = true;
-                this.material.map = texture;
-            }
-            this.material.needsUpdate = true;
+            this.clippy.scale.x = scaleX;
+            this.clippy.scale.y = scaleY;
+            this.clippy.rotation.z = rotation;
+            this.clippy.needsUpdate = true;         
         }
 
         render() {
