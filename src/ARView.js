@@ -14,12 +14,8 @@ class Marker {
     this.scene = scene;
     this.pattern = pattern;
     this.modelName = modelName;
-<<<<<<< HEAD
     this.markerCallback = callback;
     
-=======
-
->>>>>>> d8fee8913b091ddacc0a92829fe984e8a5def0de
     this.markerRoot = new Group();
     this.scene.add(this.markerRoot);
     this.marker = getMarker(arToolkitContext, this.markerRoot, this.pattern);
