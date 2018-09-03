@@ -36,7 +36,7 @@ html, body, #root, .container {
 
 .action-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 a {
@@ -52,9 +52,9 @@ i {
   margin-bottom: 5px;
 }
 .action {
-  height: 150px;
-  min-width: 150px;
-  min-height: 150px;
+  margin: 1.5px;
+  width: 70px;
+  min-height: 65px;
   display: flex;
   flex-direction: column;
   justify-content: center;

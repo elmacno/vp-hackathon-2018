@@ -68,8 +68,8 @@ class Marker {
 
 class Sketch extends Component {
   state = {
-    displayMenu: true,
-    markerName: 'rcp'
+    displayMenu: false,
+    markerName: ''
   }
 
   names = {
@@ -86,7 +86,7 @@ class Sketch extends Component {
     {
       link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
       image: 'fas fa-utensils',
-      title: 'Pedir empanadas'
+      title: 'Pedir comida'
     },
     {
       link: 'mailto:macarena.ordiz@endava.com?subject=Empanadas%20por%20favor!',
@@ -187,19 +187,19 @@ class Sketch extends Component {
     return (
       <div className="container">
         <canvas style={{flex:1}} id="root" ref={this.storeRef} />
-        <div id="menu" style={{height: displayMenu ? '30%': 0}}>
+        <div id="menu" style={{height: displayMenu ? '35%': 0}}>
           <div className="exit">
             <span className="button">
               <i onClick={() => this.setState({displayMenu: false})} className="fa fa-times" />
             </span>
           </div>
-          <h3>Hola!! Soy {name}, en que te puedo ayudar?</h3>
+          <h4>Hola! Soy {name}, en que te puedo ayudar?</h4>
           <div className="action-container">
             {
               actions.map((action) => {
                 return (
                   <a className="action" href={action.link}>
-                    <i className={ 'fa-3x ' + action.image}></i>
+                    <i className={action.image}></i>
                     <span >{action.title}</span>
                   </a>
               )})
