@@ -61,7 +61,7 @@ class Sketch extends Component {
 
 
     const scene = new Scene();
-    const camera = new PerspectiveCamera( 70, this.canvas.clientWidth / this.canvas.clientHeight, 1, 10000 );
+    const camera = new Camera();
     scene.add(camera);
 
     const onRenderFcts = [];
