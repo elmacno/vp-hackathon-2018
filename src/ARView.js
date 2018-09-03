@@ -24,13 +24,18 @@ class Marker {
   setupModel = async () => {
     this.model = await loadModel(this.modelName);
     this.markerRoot.add(this.model);
+    //this.model.rotation.x = Math.PI / 2; // -90°
+    this.model.rotation.x = - Math.PI / 4; // -90°
+    this.model.rotation.y = Math.PI; // -90°
+    this.model.scale.x = 2; // -90°
+    this.model.scale.y = 2; // -90°
+    this.model.scale.z = 2; // -90°
   }
 
   handleMarkerFound = () => {
 
   }
 }
-
 
 const styles = {
   backButton: {
@@ -61,9 +66,9 @@ class Sketch extends Component {
 
     const onRenderFcts = [];
     const arToolkitContext = initializeArToolkit(renderer, camera, onRenderFcts);
-    this.clippy = new Marker(scene, arToolkitContext, 'rcp', 'clippy');
+    this.duck = new Marker(scene, arToolkitContext, 'rcp', 'duck');
     this.computer = new Marker(scene, arToolkitContext, 'hr', 'computer');
-    await this.clippy.setupModel();
+    await this.duck.setupModel();
     await this.computer.setupModel();
 
     // render the scene
